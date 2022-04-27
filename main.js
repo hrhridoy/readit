@@ -1,4 +1,3 @@
-import 'virtual:windi.css';
 const book = document.querySelector('#book');
 
 function fetchData() {
