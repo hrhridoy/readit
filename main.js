@@ -9,9 +9,15 @@ function fetchData() {
         for (const datas of data.results) {
           // console.log(typeof datas.formats['image/jpeg']);
           let imageUrl = datas.formats['image/jpeg'];
-          book.innerHTML += `
-         <h3>${datas.title}</h3>
-         <img src=${imageUrl} />
+          book.innerHTML += `<div class="p-2 justify-center hover:bg-gradient-to-r from-green-300 to-blue-200 hover:rounded-2xl">
+          <img class="justify-items-center" src=${imageUrl} />
+          <h2 class="text-center">${datas.title}</h2>
+          <h3>${datas.authors[0].name}</h3>
+          
+          
+          
+          </Div>
+         
          `;
         }
       } else if (typeof data === 'string') {
