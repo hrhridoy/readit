@@ -1,4 +1,5 @@
 const book = document.querySelector('#book');
+const url = window.location.href;
 
 function fetchData() {
   fetch('https://gutendex.com/books')
@@ -7,23 +8,26 @@ function fetchData() {
       if (typeof data === 'object') {
         for (const datas of data.results) {
           let imageUrl = datas.formats['image/jpeg'];
-          let readUrl = datas.formats['text/plain; charset=utf-8'];
+          let readUrl = datas.formats['text/html'];
+          let download = datas.formats['application/epub+zip'];
           let tags = datas.bookshelves.values();
           let tager = [];
           for (let tag of tags) {
             tager.push(tag);
           }
-          console.log(tager);
-          // console.log(datas.authors);
-          book.innerHTML += `<div class="overflow-hidden shadow-lg p-4 flex space-x-8 hover:bg-gradient-to-r from-green-300 to-blue-200 hover:rounded-2xl">
-          <img class="w-4/5" src=${imageUrl} alt="${datas.title}">
+
+          book.innerHTML += `<div class="overflow-hidden shadow-lg p-4 flex space-x-8 hover:bg-gradient-to-r from-green-300 to-blue-200 hover:rounded-lg">
+          <img class="md:w-40 w-auto h-auto rounded-2xl" src=${imageUrl} 
+          alt="${datas.title}">
           <div class="px-4 py-2">
-          <div class="font-bold text-xl mb-2">${datas.title}</div>
-          <p class="text-gray-700 text-base">
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
-          <button class="px-4 py-1 text-sm text-purple-600 font-semibold rounded-full border border-purple-200 hover:text-white hover:bg-purple-600 hover:border-transparent focus:outline-none focus:ring-2 focus:ring-purple-600 focus:ring-offset-2"><a href=${readUrl}>Read Online</a></button>
+          <div class="font-bold text-xl mb-2 text-sky-500 dark:text-sky-400">
+          ${datas.title}</div>
+          <p class="text-base mb-2 italic text-black font-bold">Written By: 
+          ${datas.authors[0].name}</p>
+          <div class="w-3/4 justify-between flex"><button class="bg-green-500 px-2 py-2 text-sm text-black-600 font-semibold rounded-lg border hover:text-white hover:bg-purple-600 hover:border-transparent focus:outline-none focus:ring-2 focus:ring-purple-600 focus:ring-offset-2"><a href=${readUrl}>Read Online</a></button> 
+          <button class="bg-red-500 px-2 py-2 text-sm text-black-600 font-semibold rounded-lg border hover:text-white hover:bg-purple-600 hover:border-transparent focus:outline-none focus:ring-2 focus:ring-purple-600 focus:ring-offset-2"><a href=${download}>Download</a></button></div>
           
-          <div class="px-6 pt-4 pb-2">
+          <div class="pt-4 pb-2">
           <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
           ${tager[0] != undefined ? tager[0] : 'No Tags'}</span>
           <span class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
@@ -33,7 +37,6 @@ function fetchData() {
           </div>
           </div>
           </Div>
-          </div>
          `;
         }
       } else if (typeof data === 'string') {
@@ -44,14 +47,7 @@ function fetchData() {
     })
     .catch((err) => console.log(err));
 }
-window.addEventListener('onload', fetchData());
-{
-  /* <div class="p-4 flex space-x-8 hover:bg-gradient-to-r from-green-300 to-blue-200 hover:rounded-2xl">
-          <img class="block" src=${imageUrl} />
-          <div class="font-bold space-y-4">
-          <h2>${datas.title}</h2>
-          <h3>${datas.authors[0].name}</h3>
-        </div> 
-       bu 
-        */
+// window.addEventListener('onload', fetchData());
+if (url.match(/books/ | url.includes('*/'))) {
+  window.addEventListener('onload', fetchData());
 }
